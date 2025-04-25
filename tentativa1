@@ -1,0 +1,64 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+void tirar_nome (char nome,char string);
+
+int main(){
+    int escolha;
+    char nome[50];
+    char string[999];
+   
+ 
+
+    do
+  {
+    printf("\n Escolha uma opção: \n 1:Adicionar nome: \n 2: Remover nome: \n 3:Listar \n 4: sair");
+    scanf("\n %i",&escolha);
+    switch (escolha)
+    {
+    case 1:
+        printf("\n Digite o nome a ser adicionado: ");
+        scanf("%s[/^n]",nome);
+        *string = malloc(sizeof(nome));
+        strcat(string,nome);
+        break;
+        
+    case 2:
+        printf("\n Digite o nome a ser excluido: ");
+        scanf("%[/^n]",nome);
+       tirar_nome(*nome,*string);
+
+        break;
+
+    case 3:
+        printf("\n %s",string);
+        break;
+
+    case 4:
+        return 1;
+        break;
+
+    default:
+        break;
+    }
+    
+  }while(escolha!=4);
+
+  return 0;
+}
+
+void tirar_nome (char nome,char string){
+    char stringB[999];
+
+    while (strstr(string,nome)!=1){
+        strcpy(stringB,string);
+
+    }
+    strcpy(string,stringB);
+
+
+}
+
+
+
