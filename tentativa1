@@ -2,37 +2,44 @@
 #include <string.h>
 #include <stdio.h>
 
-void tirar_nome (char nome,char string);
+typedef struct no{
+    char nome[50];
+    struct no *prox;
+}no;
+
+
+void adicionar_nome(char *nomel, no **c);
+void tirar_nome (char *nomel,no *c);
+void imprimir_lista (no *c);
 
 int main(){
     int escolha;
-    char nome[50];
-    char string[999];
-   
- 
+    char nomel[50];
+
+   no *lista = NULL;
+    
 
     do
   {
-    printf("\n Escolha uma opção: \n 1:Adicionar nome: \n 2: Remover nome: \n 3:Listar \n 4: sair");
+    printf("\n Escolha uma opção: \n 1:Adicionar nome: \n 2: Remover nome: \n 3:Listar \n 4: sair\n ");
     scanf("\n %i",&escolha);
     switch (escolha)
     {
     case 1:
         printf("\n Digite o nome a ser adicionado: ");
-        scanf("%s[/^n]",nome);
-        *string = malloc(sizeof(nome));
-        strcat(string,nome);
+        scanf("%s[/^n]",nomel);
+        adicionar_nome(nomel,&lista);
         break;
         
     case 2:
         printf("\n Digite o nome a ser excluido: ");
-        scanf("%[/^n]",nome);
-       tirar_nome(*nome,*string);
+        scanf("%s[/^n]",nomel);
+       tirar_nome(nomel, &lista);
 
         break;
 
     case 3:
-        printf("\n %s",string);
+        imprimir_lista(lista);
         break;
 
     case 4:
@@ -48,17 +55,50 @@ int main(){
   return 0;
 }
 
-void tirar_nome (char nome,char string){
-    char stringB[999];
 
-    while (strstr(string,nome)!=1){
-        strcpy(stringB,string);
 
+
+
+void adicionar_nome(char *nomel, no **c){
+    no *novo = malloc(sizeof(no));
+
+    strcpy(novo->nome,nomel);
+    novo->prox = *c;
+    *c = novo;
+}
+
+void tirar_nome (char *nomel,no *c){
+    no *atual;
+    no *proximo;
+    atual = c;
+    proximo = atual->prox;
+
+
+    while(atual!=NULL){
+        if(strstr(proximo->nome,nomel)==1){
+            atual->prox = proximo->prox;
+            free(proximo);
+        }
+        atual = atual->prox;
+        proximo = proximo->prox;
     }
-    strcpy(string,stringB);
-
 
 }
 
+void imprimir_lista (no *c){
+    char string[999];  
 
+    if (c == NULL) {
+        printf("Lista vazia.\n");
+        return;
+    }
 
+    while (c != NULL) {
+        strcat(string, c->nome);
+        strcat(string, "--");  
+        c = c->prox;
+    }
+    
+    printf("%s", string);
+
+}
