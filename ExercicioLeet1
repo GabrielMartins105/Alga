@@ -1,0 +1,152 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct lista1{
+    int val;
+    struct lista1 *prox;
+    
+}lista1;
+
+typedef struct lista2{
+    int val;
+    struct lista2 *prox;
+    
+}lista2;
+
+lista1* inserir1(lista1 *c);
+lista2* inserir2(lista2 *e);
+void ordenar1(lista1 *c);
+void ordenar2(lista2 *e);
+void imprimir(lista1 *c, lista2 *e);
+
+int main(){
+    
+    lista1 *celula1 = NULL;
+    lista2 *celula2 = NULL;
+    
+    celula1 = inserir1(celula1);  
+    celula2 = inserir2(celula2);
+
+    imprimir(celula1,celula2);
+    
+    return 0;
+}
+
+lista1* inserir1(lista1 *c){
+    int numero;
+    int d=1;   
+
+    do{
+        printf("\nDigite o numero: \n");
+        scanf("%d",&numero);
+        lista1 *novo = malloc(sizeof(lista1));
+        novo->val = numero;
+        novo->prox = c;
+        c = novo;
+
+        printf("\nPressione 1 se deseja selecionar um novo numero e 0 caso queira sair");
+        scanf("%d",&d);
+
+    }while(d!=0);
+
+    ordenar1(c);
+    return c;
+
+}
+
+void ordenar1 (lista1*c){
+    int troca;
+    lista1 *ini;
+    lista1 *seguinte = NULL;
+
+    do {
+        troca = 0;
+        ini = c;
+
+        while (ini->prox != seguinte) {
+            if (ini->val > ini->prox->val) {
+                int temp = ini->val;
+                ini->val = ini->prox->val;
+                ini->prox->val = temp;
+                troca = 1;
+            }
+            ini = ini->prox;
+        }
+        seguinte = ini;
+    } while (troca);
+}
+
+lista2* inserir2(lista2 *e){
+    int numero;
+    int d=1;
+
+    
+
+    do{
+        printf("\nDigite o numero da lista 2: \n");
+        scanf("%d",&numero);
+        lista2 *novo = malloc(sizeof(lista2));
+        novo->val = numero;
+        novo->prox = e;
+        e = novo;
+
+        printf("\nPressione 1 sse deseja sellecionar um novo numero e 0 caso queira sair\n");
+        scanf("%d",&d);
+
+    }while(d!=0);
+
+    ordenar2(e);
+    return e;
+}
+
+void ordenar2 (lista2*e){
+    int troca;
+    lista2 *atual;
+    lista2 *ult = NULL;
+
+    do {
+        troca = 0;
+        atual = e;
+
+        while (atual->prox != ult) {
+            if (atual->val > atual->prox->val) {
+                int temp = atual->val;
+                atual->val = atual->prox->val;
+                atual->prox->val = temp;
+                troca = 1;
+            }
+            atual = atual->prox;
+        }
+        ult = atual;
+    } while (troca);
+}
+
+void imprimir(lista1 *c, lista2 *e) {
+    printf("\nNumeros das listas:\n");
+    
+    while (c != NULL || e != NULL) {
+        if (c != NULL && e != NULL) {
+            if (c->val == e->val) {
+                printf("%d->", c->val);
+                c = c->prox;
+            } 
+            else if (c->val < e->val) {
+                printf("%d->", c->val);
+                c = c->prox;
+            }
+            else {
+                printf("%d->", e->val);
+                e = e->prox;
+            }
+        }
+        else if (c != NULL) {
+            printf("%d->", c->val);
+            c = c->prox;
+        }
+        else {
+            printf("%d->", e->val);
+            e = e->prox;
+        }
+    }
+
+}
