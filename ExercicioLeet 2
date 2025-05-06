@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct No {
+    int val;
+    struct No *prox;
+} no;
+
+typedef struct par {
+    int val;
+    struct par *prox;
+} par;
+
+typedef struct impar {
+    int val;
+    struct impar *prox;
+} impar;
+
+void separar_e_imprimir_alternado(no *lista);
+void inserir_ordenado_par(par **lista, int valor);
+void inserir_ordenado_impar(impar **lista, int valor);
+void liberar_listas(par *listaP, impar *listaI);
+
+int main() {
+    int x = 1;
+    int num;
+    no *lista = NULL;
+    
+    while(x != 0) {
+        printf("\nDigite o numero: ");
+        scanf("%d", &num);
+        
+        no* novo = (no*)malloc(sizeof(no));
+
+        novo->val = num;
+        novo->prox = lista;
+        lista = novo;
+        
+        printf("\n'1' para continuar, '0' para sair: ");
+        scanf("%d", &x);
+    }
+
+    separar_e_imprimir_alternado(lista);
+
+    return 0;
+}
+
+void separar_e_imprimir_alternado(no *lista) {
+    int posicao = 0;
+    par *par_lista = NULL;
+    impar *impar_lista = NULL;
+    
+    no *atual = lista;
+    while(atual != NULL) {
+        if(posicao % 2 == 0) {
+            inserir_ordenado_par(&par_lista, atual->val);
+        } else {
+            inserir_ordenado_impar(&impar_lista, atual->val);
+        }
+        atual = atual->prox;
+        posicao++;
+    }
+
+
+    
+    par *p = par_lista;
+    impar *i = impar_lista;
+    int cont = 0;
+    
+    while(p != NULL || i != NULL) {
+        if(cont % 2 == 0 && p != NULL) {
+            printf("%d ", p->val);
+            p = p->prox;
+        } 
+        else if(cont % 2 != 0 && i != NULL) {
+            printf("%d ", i->val);
+            i = i->prox;
+        }
+        cont++;
+    }
+    printf("\n");
+    
+
+}
+
+void inserir_ordenado_par(par **lista, int valor) {
+    par *novo = malloc(sizeof(par));
+
+    novo->val = valor;
+    
+    if(*lista == NULL || valor < (*lista)->val) {
+        novo->prox = *lista;
+        *lista = novo;
+    } else {
+        par *atual = *lista;
+        while(atual->prox != NULL && atual->prox->val < valor) {
+            atual = atual->prox;
+        }
+        novo->prox = atual->prox;
+        atual->prox = novo;
+    }
+}
+
+void inserir_ordenado_impar(impar **lista, int valor) {
+    impar *novo = malloc(sizeof(impar));
+
+    novo->val = valor;
+    
+    if(*lista == NULL || valor < (*lista)->val) {
+        novo->prox = *lista;
+        *lista = novo;
+    } else {
+        impar *atual = *lista;
+        while(atual->prox != NULL && atual->prox->val < valor) {
+            atual = atual->prox;
+        }
+        novo->prox = atual->prox;
+        atual->prox = novo;
+    }
+}
+
