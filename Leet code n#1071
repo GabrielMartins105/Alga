@@ -1,0 +1,64 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* gcdOfStrings(char* str1, char* str2);
+
+int main() {
+    char string1[200];
+    char string2[200];
+    
+    
+    scanf(" %[^\n]", string1);
+     
+    scanf(" %[^\n]", string2);
+    
+    char* resultado = gcdOfStrings(string1, string2);
+    printf("%s\n", resultado);
+    
+    return 0;
+}
+
+
+
+char* gcdOfStrings(char* str1, char* str2) {
+    
+    int len1= strlen(str1);
+    int len2 = strlen(str2);
+
+    int temp;
+    
+    char* resposta = malloc(200 * sizeof(char));
+ 
+    
+
+    char* s1 = (char*)malloc(strlen(str1) + strlen(str2) + 1);
+    char* s2 = (char*)malloc(strlen(str1) + strlen(str2) + 1);
+
+
+    strcpy(s1,str1);
+    strcat(s1,str2);
+  
+    strcpy(s2,str2);
+    strcat(s2,str1);
+
+    if(strcmp(s1,s2)!=0){
+        
+        return "";
+    }
+
+    
+    while (len2 > 0) {
+        temp = len2;
+        len2 = len1 % len2;
+        len1 = temp;
+    }
+    
+    char* resultado = (char*)malloc(len1 + 1);
+    strncpy(resultado, str1, len1);
+    resultado[len1] = '\0';
+    
+    return resultado;
+    
+}
