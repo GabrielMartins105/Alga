@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+bool* kidsWithCandies(int* candies, int candiesSize, int extraCandies, int* returnSize);
+
+int main() {
+    
+    int candies[] = {2, 3, 5, 1, 3};
+    int candiesSize = sizeof(candies) / sizeof(candies[0]);
+    int extraCandies = 3;
+    int returnSize;
+
+    
+    bool* result = kidsWithCandies(candies, candiesSize, extraCandies, &returnSize);
+
+   
+    printf("Resultado: [");
+    for (int i = 0; i < returnSize; i++) {
+        printf("%s", result[i] ? "true" : "false");
+        if (i < returnSize - 1) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+
+    // Liberar a memória alocada
+    free(result);
+
+    return 0;
+}
+
+bool* kidsWithCandies(int* candies, int candiesSize, int extraCandies, int* returnSize) {
+    bool* resposta = malloc(candiesSize * sizeof(bool));
+    *returnSize = candiesSize;
+
+    int maior_qnt = 0;
+    for (int i = 0; i < candiesSize; i++) {
+        if (candies[i] > maior_qnt) {
+            maior_qnt = candies[i];
+        }
+    }
+
+    for (int c = 0; c < candiesSize; c++) {
+        resposta[c] = (candies[c] + extraCandies) >= maior_qnt;
+    }
+
+    return resposta;
+}
