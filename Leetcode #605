@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+bool canPlaceFlowers(int* flowerbed, int flowerbedSize, int n);
+
+int main() {
+    
+    int flowerbed1[] = {1, 0, 0, 0, 1};
+    int size1 = sizeof(flowerbed1)/sizeof(flowerbed1[0]);
+    int n1 = 1;
+    printf("Teste 1: %s\n", canPlaceFlowers(flowerbed1, size1, n1)? "true" : "false");
+
+    
+    int flowerbed2[] = {1, 0, 0, 0, 1};
+    int size2 = sizeof(flowerbed2)/sizeof(flowerbed2[0]);
+    int n2 = 2;
+    printf("Teste 2: %s\n", canPlaceFlowers(flowerbed2, size2, n2) ? "true" : "false");
+
+    
+    
+
+    return 0;
+}
+
+bool canPlaceFlowers(int* flowerbed, int flowerbedSize, int n) {
+    int cont = 0;
+    
+    for (int c = 0; c < flowerbedSize; c++) {
+        if (flowerbed[c] == 0) {
+     
+            int prev;
+            if (c == 0) {
+                prev = 0;
+            } else {
+                prev = flowerbed[c - 1];
+            }
+            
+         
+            int next;
+            if (c == flowerbedSize - 1) {
+                next = 0;
+            } else {
+                next = flowerbed[c + 1];
+            }
+            
+            if (prev == 0 && next == 0) {
+                flowerbed[c] = 1;
+                cont++;
+            }
+        }
+    }
+    
+    return cont >= n;
+}
