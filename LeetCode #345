@@ -1,0 +1,59 @@
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+   
+    char* reverseVowels(char* s);  
+   
+   int main(){
+    char palavra[50];
+
+    scanf("%[^\n]s",palavra);
+
+    
+   char *resultado = reverseVowels(palavra);
+    printf("%s \n",resultado);
+    free(resultado);
+    return 0;
+   }
+   
+   
+   
+   char* reverseVowels(char* s) {
+    int len = strlen(s);
+    char *resultado = malloc((len + 1) * sizeof(char)); 
+    strcpy(resultado, s);
+    
+    int c = 0, j = len - 1;
+    char aux;
+    
+    while (c < j) {
+     
+        while (c < j && !(resultado[c] == 'A' || resultado[c] == 'a' || 
+                          resultado[c] == 'E' || resultado[c] == 'e' || 
+                          resultado[c] == 'I' || resultado[c] == 'i' || 
+                          resultado[c] == 'O' || resultado[c] == 'o' || 
+                          resultado[c] == 'U' || resultado[c] == 'u')) {
+            c++;
+        }
+        
+        
+        while (c < j && !(resultado[j] == 'A' || resultado[j] == 'a' || 
+                          resultado[j] == 'E' || resultado[j] == 'e' || 
+                          resultado[j] == 'I' || resultado[j] == 'i' || 
+                          resultado[j] == 'O' || resultado[j] == 'o' || 
+                          resultado[j] == 'U' || resultado[j] == 'u')) {
+            j--;
+        }
+        
+        
+        if (c < j) {
+            aux = resultado[c];
+            resultado[c] = resultado[j];
+            resultado[j] = aux;
+            c++;
+            j--;
+        }
+    }
+    
+    return resultado;
+}
