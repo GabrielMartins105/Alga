@@ -1,0 +1,44 @@
+char* decodeString(char* s) {
+    int len = strlen(s);
+    char* pilha = (char*)malloc(10000 * sizeof(char));
+    int topo = -1;
+    int contPilha[1000];
+    int contTopo = -1;
+    char aux[10000];
+    
+    for(int c = 0; c < len; c++) {
+        if(isdigit(s[c])) {
+            int num = 0;
+            while(isdigit(s[c])) {
+                num = num * 10 + (s[c] - '0');
+                c++;
+            }
+            c--;
+            contPilha[++contTopo] = num;
+        }
+        else if(s[c] == '[') {
+            pilha[++topo] = s[c];
+        }
+        else if(s[c] == ']') {
+            int aux_pos = 0;
+            while(pilha[topo] != '[') {
+                aux[aux_pos++] = pilha[topo--];
+            }
+            aux[aux_pos] = '\0';
+            topo--; 
+            
+            int repeat = contPilha[contTopo--];
+            for(int r = 0; r < repeat; r++) {
+                for(int k = aux_pos-1; k >= 0; k--) {
+                    pilha[++topo] = aux[k];
+                }
+            }
+        }
+        else {
+            pilha[++topo] = s[c];
+        }
+    }
+    
+    pilha[topo+1] = '\0';
+    return pilha;
+}
