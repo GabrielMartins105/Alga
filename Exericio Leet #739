@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize);
+
+int main() {
+    // Exemplo de entrada
+    int temperatures[] = {73, 74, 75, 71, 69, 72, 76, 73};
+    int size = sizeof(temperatures) / sizeof(temperatures[0]);
+    int returnSize;
+    
+    // Chamada da função
+    int* resposta = dailyTemperatures(temperatures, size, &returnSize);
+    
+    // Imprime o resultado
+    printf("Resultado: [");
+    for (int i = 0; i < returnSize; i++) {
+        printf("%d", resposta[i]);
+        if (i < returnSize - 1) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+    
+    // Libera a memória alocada
+    free(resposta);
+    
+    return 0;
+}
+
+int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize) {
+    *returnSize = temperaturesSize;
+    int c=0;
+
+    if ( temperaturesSize == 0 || temperaturesSize == 1 ){
+        return 0;
+    }
+
+    int* pilha = ( int* ) malloc ( temperaturesSize * sizeof ( int ) );
+    int topo = -1;
+
+    int* resposta = ( int* ) malloc ( temperaturesSize * sizeof ( int ) );
+ 
+
+    for(c=0;c < temperaturesSize; c++){
+        resposta[c] = 0;
+    }
+    
+           for ( c = 0; c < temperaturesSize; c++) {
+        
+        while (topo != -1 && temperatures[c] > temperatures[pilha[topo]]) {
+            int ante = pilha[topo--];
+            resposta[ante] = c - ante;
+        }
+   
+        pilha[++topo] = c;
+    }
+            
+
+    
+
+    return resposta;
+
+}
