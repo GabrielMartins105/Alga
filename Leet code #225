@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct {
+    int val[100];
+    int topo;
+} MyStack;
+
+MyStack* myStackCreate() {
+    MyStack* pilha = malloc(sizeof(MyStack));
+    pilha->topo = -1;
+    return pilha;
+}
+
+void myStackPush(MyStack* obj, int x) {
+    if (obj->topo > 100){
+        return ;
+    }
+
+    obj->val[++obj->topo] = x;
+}
+
+int myStackPop(MyStack* obj) {
+
+    if (obj->topo == -1){
+        return 0;
+    }
+
+    int aux;
+    aux = obj->val[obj->topo];
+    obj->topo--;
+    return aux;
+}
+
+int myStackTop(MyStack* obj) {
+    int aux;
+    aux = obj->val[obj->topo];
+    return aux;
+}
+
+bool myStackEmpty(MyStack* obj) {
+     if (obj->topo == -1){
+        return true;
+    }
+    else return false;
+}
+
+void myStackFree(MyStack* obj) {
+    obj->topo = -1; 
+}
+
+int main() {
+    // Cria uma nova pilha
+    MyStack* pilha = myStackCreate();
+    
+    printf("Pilha criada. Está vazia? %s\n", myStackEmpty(pilha) ? "Sim" : "Não");
+    
+    // Teste de push
+    printf("\nAdicionando elementos...\n");
+    for (int i = 1; i <= 5; i++) {
+        myStackPush(pilha, i*10);
+        printf("Push: %d, Topo: %d\n", i*10, myStackTop(pilha));
+    }
+    
+    printf("\nPilha está vazia? %s\n", myStackEmpty(pilha) ? "Sim" : "Não");
+    
+    // Teste de pop
+    printf("\nRemovendo elementos...\n");
+    while (!myStackEmpty(pilha)) {
+        printf("Topo antes do pop: %d\n", myStackTop(pilha));
+        printf("Pop: %d\n", myStackPop(pilha));
+    }
+    
+    printf("\nPilha está vazia? %s\n", myStackEmpty(pilha) ? "Sim" : "Não");
+    
+    // Teste pop em pilha vazia
+    printf("\nTentando pop em pilha vazia: %d\n", myStackPop(pilha));
+    
+    // Teste top em pilha vazia
+    printf("Tentando ver topo em pilha vazia: %d\n", myStackTop(pilha));
+    
+    // Libera a pilha
+    myStackFree(pilha);
+    printf("\nPilha liberada.\n");
+    
+    return 0;
+}
