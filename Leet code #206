@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+struct ListNode {
+    int val;
+    struct ListNode *next;
+};
+
+
+struct ListNode* newNode(int val) {
+    struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+    node->val = val;
+    node->next = NULL;
+    return node;
+}
+
+void printList(struct ListNode* head);
+
+void printList(struct ListNode* head) {
+    while (head != NULL) {
+        printf("%d ", head->val);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    // Criando uma lista de exemplo: 1->2->3->4->5
+    struct ListNode* head = newNode(1);
+    head->next = newNode(2);
+    head->next->next = newNode(3);
+    head->next->next->next = newNode(4);
+    head->next->next->next->next = newNode(5);
+    
+    printf("Lista original: ");
+    printList(head);
+    
+   
+    head = reverseList(head);
+    
+    printf("Lista invertida: ");
+    printList(head);
+    
+    return 0;
+}
+
+void printList(struct ListNode* head) {
+    while (head != NULL) {
+        printf("%d ", head->val);
+        head = head->next;
+    }
+    printf("\n");
+}
