@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+// Estrutura do nó da árvore binária
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+// Função auxiliar para criar um novo nó
+struct TreeNode* newNode(int val) {
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = val;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+// Função TamTree (já fornecida)
+int TamTree(struct TreeNode* no) {
+    if (no == NULL) {
+        return 0;
+    }
+
+    int esquerda = TamTree(no->left);
+    int direita = TamTree(no->right);
+
+    if (direita == -1 || esquerda == -1) {
+        return -1;
+    } 
+
+    if (abs(direita - esquerda) > 1) {
+        return -1;
+    }
+
+    return (esquerda > direita ? esquerda : direita) + 1;
+}
+
+// Função isBalanced (já fornecida)
+bool isBalanced(struct TreeNode* root) {
+    return TamTree(root) != -1;
+}
+
+int main() {
+    // Caso 1: Árvore balanceada
+    //        10
+    //       /  \
+    //      5    20
+    //     / \
+    //    2   7
+    struct TreeNode* root1 = newNode(10);
+    root1->left = newNode(5);
+    root1->right = newNode(20);
+    root1->left->left = newNode(2);
+    root1->left->right = newNode(7);
+
+    printf("Árvore 1 (balanceada): %s\n", isBalanced(root1) ? "Sim" : "Não");
+
+    // Caso 2: Árvore não balanceada
+    //        10
+    //       /
+    //      5
+    //     /
+    //    2
+    struct TreeNode* root2 = newNode(10);
+    root2->left = newNode(5);
+    root2->left->left = newNode(2);
+
+    printf("Árvore 2 (não balanceada): %s\n", isBalanced(root2) ? "Sim" : "Não");
+
+    // Liberar memória alocada
+    free(root1->left->left);
+    free(root1->left->right);
+    free(root1->left);
+    free(root1->right);
+    free(root1);
+
+    free(root2->left->left);
+    free(root2->left);
+    free(root2);
+
+    return 0;
+}
