@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void quick(int* resposta, int esquerda, int direita) {
+    if (esquerda >= direita) return;
+    
+    int pivot = resposta[(esquerda + direita) / 2];
+    int i = esquerda;
+    int j = direita;
+    
+    while (i <= j) {
+        while (resposta[i] < pivot) i++;
+        while (resposta[j] > pivot) j--;
+        
+        if (i <= j) {
+            int temp = resposta[i];
+            resposta[i] = resposta[j];
+            resposta[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    
+    if (esquerda < j) quick(resposta, esquerda, j);
+    if (i < direita) quick(resposta, i, direita);
+}
+
+void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n) {
+    int tam = m + n;
+    int *resposta = (int*)malloc(tam * sizeof(int));
+    int c = 0;
+
+    for(int i = 0; i < m; i++) {
+        resposta[c++] = nums1[i];
+    }
+
+    for(int i = 0; i < n; i++) {
+        resposta[c++] = nums2[i];
+    }
+
+    quick(resposta, 0, tam - 1);
+
+    for(int i = 0; i < tam; i++) {
+        nums1[i] = resposta[i];
+    }
+
+    free(resposta);
+}
+
+int main() {
+    int nums1[6] = {1, 3, 5, 0, 0, 0}; // Array com espaço para merge
+    int nums2[3] = {2, 4, 6};          // Array a ser mesclado
+    int m = 3;                          // Número de elementos em nums1
+    int n = 3;                          // Número de elementos em nums2
+
+    printf("Antes do merge:\n");
+    printf("nums1: ");
+    for(int i = 0; i < m; i++) {
+        printf("%d ", nums1[i]);
+    }
+    printf("\nnums2: ");
+    for(int i = 0; i < n; i++) {
+        printf("%d ", nums2[i]);
+    }
+
+    merge(nums1, 6, m, nums2, 3, n);
+
+    printf("\n\nDepois do merge:\n");
+    printf("nums1: ");
+    for(int i = 0; i < m + n; i++) {
+        printf("%d ", nums1[i]);
+    }
+
+    return 0;
+}
