@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+// Definição da estrutura TreeNode
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+// Função para criar um novo nó
+struct TreeNode* newNode(int val) {
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = val;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+// Função compara (versão corrigida)
+bool compara(struct TreeNode* esq, struct TreeNode* dir) {
+    if (esq == NULL && dir == NULL) {
+        return true;
+    }
+    if (esq == NULL || dir == NULL) {
+        return false;
+    }
+    
+    return (esq->val == dir->val) &&
+           compara(esq->left, dir->right) && 
+           compara(esq->right, dir->left);
+}
+
+// Função isSymmetric
+bool isSymmetric(struct TreeNode* root) {
+    if (root == NULL) {
+        return true;
+    }
+    return compara(root->left, root->right);
+}
+
+// Função principal (main)
+int main() {
+    // Teste 1: Árvore simétrica
+    //        1
+    //       / \
+    //      2   2
+    //     / \ / \
+    //    3  4 4  3
+    struct TreeNode* root1 = newNode(1);
+    root1->left = newNode(2);
+    root1->right = newNode(2);
+    root1->left->left = newNode(3);
+    root1->left->right = newNode(4);
+    root1->right->left = newNode(4);
+    root1->right->right = newNode(3);
+
+    printf("Teste 1 (simetrica): %s\n", isSymmetric(root1) ? "true" : "false");
+
+    // Teste 2: Árvore não simétrica
+    //        1
+    //       / \
+    //      2   2
+    //       \   \
+    //        3   3
+    struct TreeNode* root2 = newNode(1);
+    root2->left = newNode(2);
+    root2->right = newNode(2);
+    root2->left->right = newNode(3);
+    root2->right->right = newNode(3);
+
+    printf("Teste 2 (nao simetrica): %s\n", isSymmetric(root2) ? "true" : "false");
+
+    // Liberar memória alocada (opcional, apenas para evitar memory leaks)
+    free(root1->left->left);
+    free(root1->left->right);
+    free(root1->right->left);
+    free(root1->right->right);
+    free(root1->left);
+    free(root1->right);
+    free(root1);
+
+    free(root2->left->right);
+    free(root2->right->right);
+    free(root2->left);
+    free(root2->right);
+    free(root2);
+
+    return 0;
+}
