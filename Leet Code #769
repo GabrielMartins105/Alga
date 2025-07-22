@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int maxChunksToSorted(int* arr, int arrSize) {
+    int c = arrSize;
+    int valCorreto=0;
+    int valAtual=0;
+    int chunks = 0;
+
+    for( c=0;c<arrSize;c++ ){
+        valCorreto += c;
+        valAtual += arr[c];
+
+        if (valCorreto == valAtual){
+            chunks++;
+        } 
+    }
+
+    return chunks;
+}
+
+int main() {
+    // Teste 1: Array já ordenado
+    int arr1[] = {0, 1, 2, 3, 4};
+    int size1 = sizeof(arr1) / sizeof(arr1[0]);
+    printf("Teste 1: %d\n", maxChunksToSorted(arr1, size1)); // Deve imprimir 5
+
+    // Teste 2: Array com chunks
+    int arr2[] = {1, 0, 3, 2, 4};
+    int size2 = sizeof(arr2) / sizeof(arr2[0]);
+    printf("Teste 2: %d\n", maxChunksToSorted(arr2, size2)); // Deve imprimir 3
+
+    // Teste 3: Array com um único chunk
+    int arr3[] = {4, 3, 2, 1, 0};
+    int size3 = sizeof(arr3) / sizeof(arr3[0]);
+    printf("Teste 3: %d\n", maxChunksToSorted(arr3, size3)); // Deve imprimir 1
+
+    return 0;
+}
