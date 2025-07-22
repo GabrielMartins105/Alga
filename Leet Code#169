@@ -1,0 +1,78 @@
+#include <stdio.h>  // Exercicio para dizer qual e o elemento de um vetor que aparece mais vezes
+
+void quick(int* nums, int esq, int dir) {
+    if (esq >= dir) return;
+
+    int e = esq;
+    int d = dir;
+    int mid = nums[(dir + esq) / 2];
+
+    while (e <= d) {
+        while (nums[e] < mid) e++;
+        while (nums[d] > mid) d--;
+
+        if (e <= d) {
+            int temp = nums[d];
+            nums[d] = nums[e];
+            nums[e] = temp;
+            e++;
+            d--;
+        }
+    }
+
+    if (esq < d) quick(nums, esq, d);
+    if (dir > e) quick(nums, e, dir);
+}
+
+int majorityElement(int* nums, int numsSize) {
+    if (numsSize == 1) return nums[0];
+    quick(nums, 0, numsSize - 1);
+
+    int candidato = nums[0];
+    int maior = 1;
+    int resposta = nums[0];
+    int contador = 1;
+
+    for (int c = 1; c < numsSize; c++) {
+        if (nums[c] == candidato) {
+            contador++;
+            if (contador > maior) {
+                maior = contador;
+                resposta = candidato;
+            }
+        } else {
+            if (contador > maior) {
+                maior = contador;
+                resposta = candidato;
+            }
+            candidato = nums[c];
+            contador = 1;
+        }
+    }
+
+    return resposta;
+}
+
+int main() {
+    // Teste 1: Array com elemento majoritário (3)
+    int nums1[] = {3, 2, 3};
+    int size1 = sizeof(nums1) / sizeof(nums1[0]);
+    printf("Teste 1 - Elemento majoritário: %d\n", majorityElement(nums1, size1)); // Deve imprimir 3
+
+    // Teste 2: Array com elemento majoritário (2)
+    int nums2[] = {2, 2, 1, 1, 1, 2, 2};
+    int size2 = sizeof(nums2) / sizeof(nums2[0]);
+    printf("Teste 2 - Elemento majoritário: %d\n", majorityElement(nums2, size2)); // Deve imprimir 2
+
+    // Teste 3: Array com apenas um elemento
+    int nums3[] = {5};
+    int size3 = sizeof(nums3) / sizeof(nums3[0]);
+    printf("Teste 3 - Elemento majoritário: %d\n", majorityElement(nums3, size3)); // Deve imprimir 5
+
+    // Teste 4: Array sem elemento majoritário (retorna o mais frequente)
+    int nums4[] = {1, 1, 2, 2, 3};
+    int size4 = sizeof(nums4) / sizeof(nums4[0]);
+    printf("Teste 4 - Elemento mais frequente: %d\n", majorityElement(nums4, size4)); // Pode imprimir 1 ou 2
+
+    return 0;
+}
